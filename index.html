@@ -185,6 +185,11 @@
             box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
         }
 
+        /* Estilo para cuando el input es inválido (según el pattern) */
+        input:invalid:not(:placeholder-shown) {
+            border-color: var(--error);
+        }
+
         .btn-submit {
             width: 100%;
             background: var(--primary);
@@ -364,7 +369,15 @@
                         <label for="doc-id">Número de Documento</label>
                         <div class="input-group">
                             <span class="input-icon">🆔</span>
-                            <input type="text" id="doc-id" placeholder="Ej: 10203040" required>
+                            <!-- Input actualizado con validaciones numéricas -->
+                            <input 
+                                type="text" 
+                                id="doc-id" 
+                                placeholder="Ej: 10203040"
+                                pattern="[0-9]+"
+                                inputmode="numeric"
+                                maxlength="15"
+                                required>
                         </div>
                     </div>
                     <button type="submit" id="submit-btn" class="btn-submit">Consultar Documento</button>
