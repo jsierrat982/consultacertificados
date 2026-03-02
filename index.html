@@ -36,7 +36,6 @@
             min-height: 100vh;
         }
 
-        /* Layout Semántico */
         header {
             background-color: var(--card-bg);
             padding: 2rem 1rem;
@@ -78,7 +77,6 @@
             font-size: 0.9rem;
         }
 
-        /* Formulario y Controles */
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -120,11 +118,11 @@
             background-color: var(--primary-hover);
         }
 
-        button:active {
-            transform: scale(0.98);
+        button:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
         }
 
-        /* Mensajes de Feedback */
         #status-message {
             margin-top: 1.5rem;
             padding: 1rem;
@@ -153,7 +151,6 @@
             font-size: 0.8rem;
         }
 
-        /* Media Queries para Desktop */
         @media (min-width: 768px) {
             header h1 {
                 font-size: 2rem;
@@ -182,7 +179,7 @@
                         type="text" 
                         id="doc-id" 
                         name="doc-id" 
-                        placeholder="Ej: 12345678" 
+                        placeholder="Ej: 1001" 
                         required
                         aria-label="Ingrese su número de documento"
                     >
@@ -199,76 +196,50 @@
     </footer>
 
     <script>
-        /**
-         * Lógica de JavaScript ES6+
-         */
         const searchForm = document.getElementById('search-form');
         const statusMessage = document.getElementById('status-message');
         const submitBtn = document.getElementById('submit-btn');
 
-        // CONFIGURACIÓN: Ajusta la ruta de tus archivos aquí
-        // Si tu web está en midominio.github.io/mi-repo, la ruta relativa funciona bien
-        const PDF_FOLDER_PATH = './documentos/'; 
+        // CORRECCIÓN: La carpeta en GitHub se llama "Documentos" con D mayúscula
+        const PDF_FOLDER_PATH = './Documentos/'; 
 
-        /**
-         * Muestra un mensaje al usuario
-         * @param {string} text - Contenido del mensaje
-         * @param {string} type - 'success' o 'error'
-         */
         const displayMessage = (text, type) => {
             statusMessage.textContent = text;
             statusMessage.className = type;
             statusMessage.style.display = 'block';
         };
 
-        /**
-         * Intenta validar si el archivo existe antes de abrirlo
-         * @param {string} url - Ruta al archivo
-         */
         const checkFileExists = async (url) => {
             try {
-                // Usamos el método HEAD para no descargar el archivo completo, solo verificar existencia
-                const response = await fetch(url, { method: 'HEAD' });
+                // Forzamos la limpieza de caché para la prueba
+                const response = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
                 return response.ok;
             } catch (error) {
-                console.error('Error verificando archivo:', error);
                 return false;
             }
         };
 
-        /**
-         * Manejador del evento Submit
-         */
         searchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const docId = document.getElementById('doc-id').value.trim();
             if (!docId) return;
 
-            // Reset de UI
             statusMessage.style.display = 'none';
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Verificando...';
+            submitBtn.textContent = 'Buscando...';
 
+            // Asegúrate que los archivos terminen en .pdf (minúscula) en GitHub
             const fileName = `${docId}.pdf`;
             const fileUrl = `${PDF_FOLDER_PATH}${fileName}`;
 
-            // Verificación y acción
             const exists = await checkFileExists(fileUrl);
 
             if (exists) {
-                displayMessage('Documento encontrado. Su descarga comenzará en breve.', 'success');
-                
-                // Opción A: Abrir en pestaña nueva
+                displayMessage('Documento encontrado. Se abrirá en una nueva pestaña.', 'success');
                 window.open(fileUrl, '_blank');
-
-                // Opción B: Forzar descarga (creando un link temporal)
-                const link = document.createElement('a');
-                link.href = fileUrl;
-                link.download = fileName;
-                // link.click(); // Descomentar si se prefiere descarga directa automática
             } else {
-                displayMessage('No se encontró ningún documento asociado a este número. Verifique e intente nuevamente.', 'error');
+                displayMessage(`No se encontró el documento "${fileName}" en la carpeta "Documentos".`, 'error');
             }
 
             submitBtn.disabled = false;
