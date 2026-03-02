@@ -84,10 +84,6 @@
             font-weight: bold;
         }
 
-        .logo-text strong {
-            color: var(--text-dark);
-        }
-
         /* --- HERO SECTION --- */
         .hero {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -123,7 +119,6 @@
             .portal-layout {
                 grid-template-columns: 1.5fr 1fr;
             }
-            .hero h1 { font-size: 2.5rem; }
         }
 
         /* --- TARJETA DE BÚSQUEDA --- */
@@ -201,21 +196,15 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
         }
 
         .btn-submit:hover {
             background: var(--primary-dark);
-            transform: translateY(-1px);
         }
 
         .btn-submit:disabled {
             background: #94a3b8;
             cursor: not-allowed;
-            transform: none;
         }
 
         /* --- MENSAJES DE ESTADO --- */
@@ -285,24 +274,61 @@
             font-size: 0.9rem;
         }
 
-        .support-link:hover {
-            text-decoration: underline;
-        }
-
-        /* --- FOOTER --- */
+        /* --- FOOTER PROFESIONAL --- */
         footer {
             background: var(--white);
-            padding: 3rem 0;
+            padding: 4rem 0 3rem 0;
             margin-top: 4rem;
             border-top: 1px solid #e2e8f0;
-            text-align: center;
             color: var(--text-light);
             font-size: 0.85rem;
         }
 
-        .footer-logo {
+        .footer-grid {
+            display: grid;
+            gap: 2.5rem;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr 1.2fr;
+                text-align: left;
+            }
+        }
+
+        .footer-section h4 {
+            color: var(--text-dark);
             margin-bottom: 1rem;
-            opacity: 0.7;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .professional-info {
+            line-height: 1.8;
+        }
+
+        .prof-name {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1rem;
+            display: block;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .copyright-bar {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #f1f5f9;
+            text-align: center;
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -320,18 +346,17 @@
     <header class="hero">
         <div class="container">
             <h1>Portal de Certificados</h1>
-            <p>Sus resultados médicos, siempre a su alcance con total seguridad.</p>
+            <p>Acceda a sus resultados clínicos con total seguridad y confidencialidad.</p>
         </div>
     </header>
 
     <main class="container">
         <div class="portal-layout">
             
-            <!-- Bloque de Búsqueda -->
             <section class="card">
                 <div class="card-header">
                     <h2>Consultar Resultados</h2>
-                    <p>Ingrese su identificación para descargar el reporte oficial.</p>
+                    <p>Ingrese su identificación para descargar el reporte oficial en PDF.</p>
                 </div>
 
                 <form id="search-form">
@@ -339,61 +364,69 @@
                         <label for="doc-id">Número de Documento</label>
                         <div class="input-group">
                             <span class="input-icon">🆔</span>
-                            <input 
-                                type="text" 
-                                id="doc-id" 
-                                placeholder="Ej: 10203040" 
-                                required
-                            >
+                            <input type="text" id="doc-id" placeholder="Ej: 10203040" required>
                         </div>
                     </div>
-
-                    <button type="submit" id="submit-btn" class="btn-submit">
-                        Consultar Documento
-                    </button>
+                    <button type="submit" id="submit-btn" class="btn-submit">Consultar Documento</button>
                 </form>
 
                 <div id="status-message" class="status-box"></div>
             </section>
 
-            <!-- Bloque de Soporte -->
             <aside class="help-box">
                 <h3>¿Necesita asistencia?</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 1rem; color: var(--text-light);">
-                    Si su documento no aparece, considere lo siguiente:
-                </p>
                 <ul>
                     <li>Verifique que el número ingresado sea correcto.</li>
-                    <li>Los resultados pueden tardar hasta 24-48 horas hábiles.</li>
-                    <li>Asegúrese de tener una conexión estable a internet.</li>
+                    <li>Los resultados pueden tardar entre 24 y 48 horas.</li>
+                    <li>Consulte si el examen ya fue validado por el especialista.</li>
                 </ul>
-                <!-- Vínculo de WhatsApp actualizado -->
-                <a href="https://wa.me/573155257405" target="_blank" rel="noopener noreferrer" class="support-link">💬 Contactar Soporte Técnico (WhatsApp)</a>
+                <a href="https://wa.me/573155257405" target="_blank" rel="noopener noreferrer" class="support-link">💬 Soporte Técnico (WhatsApp)</a>
             </aside>
 
         </div>
     </main>
 
     <footer>
-        <div class="container">
-            <div class="footer-logo">
-                <strong>LABORATORIOS NANA</strong>
+        <div class="container footer-grid">
+            
+            <!-- Datos de la Bacterióloga -->
+            <div class="footer-section">
+                <h4>Dirección Técnica</h4>
+                <div class="professional-info">
+                    <span class="prof-name">Adriana Patiño Dorado</span>
+                    <p>Bacterióloga</p>
+                    <p style="font-size: 0.8rem; margin-top: 4px;">Especialista en Salud Ocupacional y Riesgos Laborales</p>
+                    <p style="font-size: 0.8rem; opacity: 0.8;">Reg. 29813130 | Lic. 25-3192</p>
+                </div>
             </div>
-            <p>&copy; 2026 Laboratorio Nanita. Todos los derechos reservados.</p>
-            <p style="margin-top: 0.5rem; opacity: 0.7;">
-                Certificados con validez oficial para trámites médicos y laborales.
-            </p>
+
+            <!-- Datos de Contacto Sede -->
+            <div class="footer-section">
+                <h4>Contacto Sede</h4>
+                <div class="contact-item">📍 Carrera 15 Este No 69-60 Sur</div>
+                <div class="contact-item">🏘️ Juan Rey, Bogotá D.C.</div>
+                <div class="contact-item">📞 Tel: 3653107 ext. 1018-1011</div>
+            </div>
+
+            <!-- Información Legal -->
+            <div class="footer-section">
+                <h4>Información</h4>
+                <p>Laboratorio clínico autorizado para el procesamiento de pruebas de baja y mediana complejidad.</p>
+                <p style="margin-top: 10px; font-weight: 500;">BOGOTÁ.D.C. - COLOMBIA</p>
+            </div>
+        </div>
+
+        <div class="container copyright-bar">
+            <p>&copy; 2026 Laboratorios Nana. Todos los derechos reservados.</p>
         </div>
     </footer>
 
     <script>
-        // LÓGICA DE FUNCIONAMIENTO
         const searchForm = document.getElementById('search-form');
         const statusMessage = document.getElementById('status-message');
         const submitBtn = document.getElementById('submit-btn');
         const docInput = document.getElementById('doc-id');
 
-        // IMPORTANTE: Ruta de la carpeta en GitHub
         const PDF_FOLDER_PATH = './Documentos/'; 
 
         const showFeedback = (text, type) => {
@@ -405,34 +438,26 @@
             try {
                 const response = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
                 return response.ok;
-            } catch (e) {
-                return false;
-            }
+            } catch (e) { return false; }
         };
 
         searchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             const docId = docInput.value.trim();
             if (!docId) return;
 
-            // UI Loading
             statusMessage.className = 'status-box';
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Buscando en base de datos...';
+            submitBtn.textContent = 'Verificando archivo...';
 
-            const fileName = `${docId}.pdf`;
-            const fileUrl = `${PDF_FOLDER_PATH}${fileName}`;
-
+            const fileUrl = `${PDF_FOLDER_PATH}${docId}.pdf`;
             const exists = await verifyFile(fileUrl);
 
             if (exists) {
-                showFeedback('¡Documento encontrado! Abriendo PDF...', 'success');
-                setTimeout(() => {
-                    window.open(fileUrl, '_blank');
-                }, 800);
+                showFeedback('Documento encontrado. Abriendo...', 'success');
+                setTimeout(() => { window.open(fileUrl, '_blank'); }, 800);
             } else {
-                showFeedback(`No se encontró un certificado para el número: ${docId}. Por favor, verifíquelo.`, 'error');
+                showFeedback(`No se encontró el certificado ${docId}.pdf en la carpeta de Documentos.`, 'error');
             }
 
             submitBtn.disabled = false;
