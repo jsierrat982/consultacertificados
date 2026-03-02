@@ -185,11 +185,7 @@
             box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
         }
 
-        /* Estilo para cuando el input es inválido (según el pattern) */
-        input:invalid:not(:placeholder-shown) {
-            border-color: var(--error);
-        }
-
+        /* --- BOTÓN Y LOADER --- */
         .btn-submit {
             width: 100%;
             background: var(--primary);
@@ -201,6 +197,10 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
         }
 
         .btn-submit:hover {
@@ -210,6 +210,26 @@
         .btn-submit:disabled {
             background: #94a3b8;
             cursor: not-allowed;
+        }
+
+        /* Estilo del Loader */
+        .btn-submit.loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .btn-submit.loading::after {
+            content: '';
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* --- MENSAJES DE ESTADO --- */
@@ -339,10 +359,10 @@
 </head>
 <body>
 
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Navegación principal">
         <div class="container">
             <a href="#" class="logo">
-                <div class="logo-icon">✚</div>
+                <div class="logo-icon" aria-hidden="true">✚</div>
                 <div class="logo-text">LABORATORIOS <strong>NANA</strong></div>
             </a>
         </div>
@@ -364,12 +384,11 @@
                     <p>Ingrese su identificación para descargar el reporte oficial en PDF.</p>
                 </div>
 
-                <form id="search-form">
+                <form id="search-form" novalidate>
                     <div class="form-group">
                         <label for="doc-id">Número de Documento</label>
                         <div class="input-group">
-                            <span class="input-icon">🆔</span>
-                            <!-- Input actualizado con validaciones numéricas -->
+                            <span class="input-icon" aria-hidden="true">🆔</span>
                             <input 
                                 type="text" 
                                 id="doc-id" 
@@ -377,13 +396,16 @@
                                 pattern="[0-9]+"
                                 inputmode="numeric"
                                 maxlength="15"
-                                required>
+                                required
+                                aria-required="true">
                         </div>
                     </div>
-                    <button type="submit" id="submit-btn" class="btn-submit">Consultar Documento</button>
+                    <button type="submit" id="submit-btn" class="btn-submit">
+                        <span class="btn-text">Consultar Documento</span>
+                    </button>
                 </form>
 
-                <div id="status-message" class="status-box"></div>
+                <div id="status-message" class="status-box" role="alert"></div>
             </section>
 
             <aside class="help-box">
@@ -401,8 +423,6 @@
 
     <footer>
         <div class="container footer-grid">
-            
-            <!-- Datos de la Bacterióloga -->
             <div class="footer-section">
                 <h4>Dirección Técnica</h4>
                 <div class="professional-info">
@@ -413,7 +433,6 @@
                 </div>
             </div>
 
-            <!-- Datos de Contacto Sede -->
             <div class="footer-section">
                 <h4>Contacto Sede</h4>
                 <div class="contact-item">📍 Carrera 15 Este No 69-60 Sur</div>
@@ -421,7 +440,6 @@
                 <div class="contact-item">📞 Tel: 3653107 ext. 1018-1011</div>
             </div>
 
-            <!-- Información Legal -->
             <div class="footer-section">
                 <h4>Información</h4>
                 <p>Laboratorio clínico autorizado para el procesamiento de pruebas de baja y mediana complejidad.</p>
@@ -435,46 +453,74 @@
     </footer>
 
     <script>
+        /**
+         * Lógica del Portal de Resultados
+         * Maneja la validación de archivos y feedback visual
+         */
         const searchForm = document.getElementById('search-form');
         const statusMessage = document.getElementById('status-message');
         const submitBtn = document.getElementById('submit-btn');
+        const btnText = submitBtn.querySelector('.btn-text');
         const docInput = document.getElementById('doc-id');
 
         const PDF_FOLDER_PATH = './Documentos/'; 
 
+        /**
+         * Muestra mensajes de estado al usuario
+         */
         const showFeedback = (text, type) => {
             statusMessage.textContent = text;
             statusMessage.className = `status-box ${type}`;
         };
 
+        /**
+         * Verifica la existencia del archivo en el servidor mediante HEAD request
+         */
         const verifyFile = async (url) => {
             try {
+                // Implementación de Fetch con tiempo de espera para simular carga si es necesario
                 const response = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
                 return response.ok;
-            } catch (e) { return false; }
+            } catch (e) { 
+                return false; 
+            }
         };
 
         searchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
             const docId = docInput.value.trim();
             if (!docId) return;
 
+            // Reset de estados
             statusMessage.className = 'status-box';
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Verificando archivo...';
+            submitBtn.classList.add('loading');
+            btnText.textContent = 'Verificando...';
 
             const fileUrl = `${PDF_FOLDER_PATH}${docId}.pdf`;
-            const exists = await verifyFile(fileUrl);
 
-            if (exists) {
-                showFeedback('Documento encontrado. Abriendo...', 'success');
-                setTimeout(() => { window.open(fileUrl, '_blank'); }, 800);
-            } else {
-                showFeedback(`No se encontró el certificado ${docId}.pdf en la carpeta de Documentos.`, 'error');
+            try {
+                // Esperamos la verificación del archivo
+                const exists = await verifyFile(fileUrl);
+
+                if (exists) {
+                    showFeedback('Documento encontrado. Abriendo reporte...', 'success');
+                    // Pequeño delay para que el usuario vea el mensaje de éxito
+                    setTimeout(() => { 
+                        window.open(fileUrl, '_blank'); 
+                    }, 1000);
+                } else {
+                    showFeedback(`No se encontró el certificado para el documento ${docId}.`, 'error');
+                }
+            } catch (error) {
+                showFeedback('Error en la conexión. Intente más tarde.', 'error');
+            } finally {
+                // Restaurar botón
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+                btnText.textContent = 'Consultar Documento';
             }
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Consultar Documento';
         });
     </script>
 </body>
