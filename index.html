@@ -3,23 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificados Lab Nana</title>
+    <title>Resultados en Línea | Laboratorios Nana</title>
+    <!-- Fuentes Profesionales -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS3 Moderno con Variables y Mobile-First */
+        /* --- VARIABLES DE DISEÑO --- */
         :root {
-            --primary-color: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --error-color: #ef4444;
-            --success-color: #22c55e;
-            --border-radius: 12px;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --primary: #0284c7;        /* Azul Médico */
+            --primary-dark: #0369a1;
+            --secondary: #06b6d4;      /* Cian Limpieza */
+            --accent: #f0f9ff;
+            --success: #10b981;
+            --error: #ef4444;
+            --bg-main: #f8fafc;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
         }
 
+        /* --- RESET --- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -27,54 +34,119 @@
         }
 
         body {
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
             line-height: 1.6;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
         }
 
-        header {
-            background-color: var(--card-bg);
-            padding: 2rem 1rem;
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* --- NAVEGACIÓN --- */
+        .navbar {
+            background: var(--white);
+            padding: 1.25rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary);
+            font-size: 1.25rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .logo-text strong {
+            color: var(--text-dark);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 3rem 0 5rem 0;
             text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        main {
+            margin-top: -3rem;
+            flex: 1;
+        }
+
+        .portal-layout {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .portal-layout {
+                grid-template-columns: 1.5fr 1fr;
+            }
+            .hero h1 { font-size: 2.5rem; }
+        }
+
+        /* --- TARJETA DE BÚSQUEDA --- */
+        .card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius);
             box-shadow: var(--shadow);
+        }
+
+        .card-header {
             margin-bottom: 2rem;
         }
 
-        header h1 {
+        .card-header h2 {
+            color: var(--primary);
             font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        main {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 1rem;
-        }
-
-        .search-card {
-            background-color: var(--card-bg);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .search-card h2 {
             margin-bottom: 0.5rem;
-            font-size: 1.25rem;
         }
 
-        .search-card p {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
+        .card-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
         }
 
         .form-group {
@@ -83,140 +155,256 @@
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
             font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            pointer-events: none;
+            opacity: 0.6;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            padding: 0.85rem 1rem 0.85rem 3rem;
+            border: 2.5px solid #e2e8f0;
+            border-radius: 10px;
             font-size: 1rem;
-            transition: border-color 0.2s;
+            font-family: inherit;
+            transition: all 0.2s;
         }
 
         input[type="text"]:focus {
             outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
         }
 
-        button {
+        .btn-submit {
             width: 100%;
-            background-color: var(--primary-color);
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 0.75rem;
-            border-radius: 8px;
+            padding: 1rem;
+            border-radius: 10px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
-        button:hover {
-            background-color: var(--primary-hover);
+        .btn-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
         }
 
-        button:disabled {
-            background-color: #94a3b8;
+        .btn-submit:disabled {
+            background: #94a3b8;
             cursor: not-allowed;
+            transform: none;
         }
 
-        #status-message {
+        /* --- MENSAJES DE ESTADO --- */
+        .status-box {
             margin-top: 1.5rem;
             padding: 1rem;
             border-radius: 8px;
-            display: none;
             font-size: 0.9rem;
+            display: none;
             text-align: center;
+            border-left: 5px solid transparent;
         }
 
-        .error {
-            background-color: #fee2e2;
-            color: var(--error-color);
-            border: 1px solid #fecaca;
+        .status-box.success {
+            display: block;
+            background: #f0fdf4;
+            color: #166534;
+            border-left-color: var(--success);
         }
 
-        .success {
-            background-color: #dcfce7;
-            color: var(--success-color);
-            border: 1px solid #bbf7d0;
+        .status-box.error {
+            display: block;
+            background: #fef2f2;
+            color: #991b1b;
+            border-left-color: var(--error);
         }
 
-        footer {
-            text-align: center;
+        /* --- SIDEBAR DE AYUDA --- */
+        .help-box {
+            background: var(--accent);
             padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.8rem;
+            border-radius: var(--radius);
+            border: 1px solid #bae6fd;
         }
 
-        @media (min-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-            .search-card {
-                margin-top: 3rem;
-            }
+        .help-box h3 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .help-box ul {
+            list-style: none;
+        }
+
+        .help-box li {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .help-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .support-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .support-link:hover {
+            text-decoration: underline;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--white);
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .footer-logo {
+            margin-bottom: 1rem;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Portal de Consulta de Certificado</h1>
-        <h1>LABORATORIOS NANA</h1>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <div class="logo-icon">✚</div>
+                <div class="logo-text">LABORATORIOS <strong>NANA</strong></div>
+            </a>
+        </div>
+    </nav>
 
+    <header class="hero">
+        <div class="container">
+            <h1>Portal de Certificados</h1>
+            <p>Sus resultados médicos, siempre a su alcance con total seguridad.</p>
+        </div>
     </header>
 
-    <main>
-        <section class="search-card" role="search">
-            <h2>Búsqueda por CC</h2>
-            <p>Ingrese su número de identificación para descargar su certificado.</p>
+    <main class="container">
+        <div class="portal-layout">
             
-            <form id="search-form">
-                <div class="form-group">
-                    <label for="doc-id">Número de Documento</label>
-                    <input 
-                        type="text" 
-                        id="doc-id" 
-                        name="doc-id" 
-                        placeholder="Ej: 1001" 
-                        required
-                        aria-label="Ingrese su número de documento"
-                    >
+            <!-- Bloque de Búsqueda -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Consultar Resultados</h2>
+                    <p>Ingrese su identificación para descargar el reporte oficial.</p>
                 </div>
-                <button type="submit" id="submit-btn">Consultar Documento</button>
-            </form>
 
-            <div id="status-message" aria-live="polite"></div>
-        </section>
+                <form id="search-form">
+                    <div class="form-group">
+                        <label for="doc-id">Número de Documento</label>
+                        <div class="input-group">
+                            <span class="input-icon">🆔</span>
+                            <input 
+                                type="text" 
+                                id="doc-id" 
+                                placeholder="Ej: 10203040" 
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="btn-submit">
+                        Consultar Documento
+                    </button>
+                </form>
+
+                <div id="status-message" class="status-box"></div>
+            </section>
+
+            <!-- Bloque de Soporte -->
+            <aside class="help-box">
+                <h3>¿Necesita asistencia?</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 1rem; color: var(--text-light);">
+                    Si su documento no aparece, considere lo siguiente:
+                </p>
+                <ul>
+                    <li>Verifique que el número ingresado sea correcto.</li>
+                    <li>Los resultados pueden tardar hasta 24-48 horas hábiles.</li>
+                    <li>Asegúrese de tener una conexión estable a internet.</li>
+                </ul>
+                <a href="mailto:soporte@labnana.com" class="support-link">📧 Contactar Soporte Técnico</a>
+            </aside>
+
+        </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 Laboratorio Nanita. Los Derechos Reservados</p>
+        <div class="container">
+            <div class="footer-logo">
+                <strong>LABORATORIOS NANA</strong>
+            </div>
+            <p>&copy; 2026 Laboratorio Nanita. Todos los derechos reservados.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.7;">
+                Certificados con validez oficial para trámites médicos y laborales.
+            </p>
+        </div>
     </footer>
 
     <script>
+        // LÓGICA DE FUNCIONAMIENTO
         const searchForm = document.getElementById('search-form');
         const statusMessage = document.getElementById('status-message');
         const submitBtn = document.getElementById('submit-btn');
+        const docInput = document.getElementById('doc-id');
 
-        // CORRECCIÓN: La carpeta en GitHub se llama "Documentos" con D mayúscula
+        // IMPORTANTE: Ruta de la carpeta en GitHub (Asegurar que coincida con tu repositorio)
         const PDF_FOLDER_PATH = './Documentos/'; 
 
-        const displayMessage = (text, type) => {
+        const showFeedback = (text, type) => {
             statusMessage.textContent = text;
-            statusMessage.className = type;
-            statusMessage.style.display = 'block';
+            statusMessage.className = `status-box ${type}`;
         };
 
-        const checkFileExists = async (url) => {
+        const verifyFile = async (url) => {
             try {
-                // Forzamos la limpieza de caché para la prueba
                 const response = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
                 return response.ok;
-            } catch (error) {
+            } catch (e) {
                 return false;
             }
         };
@@ -224,24 +412,26 @@
         searchForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const docId = document.getElementById('doc-id').value.trim();
+            const docId = docInput.value.trim();
             if (!docId) return;
 
-            statusMessage.style.display = 'none';
+            // UI Loading
+            statusMessage.className = 'status-box';
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Buscando...';
+            submitBtn.textContent = 'Buscando en base de datos...';
 
-            // Asegúrate que los archivos terminen en .pdf (minúscula) en GitHub
             const fileName = `${docId}.pdf`;
             const fileUrl = `${PDF_FOLDER_PATH}${fileName}`;
 
-            const exists = await checkFileExists(fileUrl);
+            const exists = await verifyFile(fileUrl);
 
             if (exists) {
-                displayMessage('Documento encontrado. Se abrirá en una nueva pestaña.', 'success');
-                window.open(fileUrl, '_blank');
+                showFeedback('¡Documento encontrado! Abriendo PDF...', 'success');
+                setTimeout(() => {
+                    window.open(fileUrl, '_blank');
+                }, 800);
             } else {
-                displayMessage(`No se encontró el documento "${fileName}" en la carpeta "Documentos".`, 'error');
+                showFeedback(`No se encontró un certificado para el número: ${docId}. Por favor, verifíquelo.`, 'error');
             }
 
             submitBtn.disabled = false;
@@ -250,5 +440,3 @@
     </script>
 </body>
 </html>
-
-
