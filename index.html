@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultados en Línea | Laboratorios Nana</title>
-    <!-- Fuentes Profesionales -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Scripts de Iconos -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        /* --- VARIABLES DE DISEÑO --- */
         :root {
-            --primary: #0284c7;        /* Azul Médico */
+            --primary: #0284c7;
             --primary-dark: #0369a1;
-            --secondary: #06b6d4;      /* Cian Limpieza */
+            --secondary: #06b6d4;
             --accent: #f0f9ff;
             --success: #10b981;
             --error: #ef4444;
@@ -26,12 +26,7 @@
             --radius: 12px;
         }
 
-        /* --- RESET --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -53,8 +48,11 @@
         /* --- NAVEGACIÓN --- */
         .navbar {
             background: var(--white);
-            padding: 1.25rem 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 0.75rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .navbar .container {
@@ -66,48 +64,34 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            color: var(--primary);
-            font-size: 1.25rem;
             text-decoration: none;
         }
 
-        .logo-icon {
-            background: var(--primary);
-            color: white;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            font-weight: bold;
+        /* Estilos específicos para el logo de imagen */
+        .logo-img {
+            height: 45px; /* Altura ideal para la barra de navegación */
+            width: auto;
+            display: block;
+            transition: transform 0.2s ease;
         }
 
-        /* --- HERO SECTION --- */
+        .logo:hover .logo-img {
+            transform: scale(1.02);
+        }
+
+        /* --- HERO --- */
         .hero {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: var(--white);
-            padding: 3rem 0 5rem 0;
+            padding: 4rem 0 6rem 0;
             text-align: center;
         }
 
-        .hero h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
+        .hero h1 { font-size: 2.25rem; margin-bottom: 0.75rem; }
+        .hero p { font-size: 1.1rem; opacity: 0.95; max-width: 600px; margin: 0 auto; }
 
-        .hero p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* --- CONTENIDO PRINCIPAL --- */
-        main {
-            margin-top: -3rem;
-            flex: 1;
-        }
+        /* --- LAYOUT --- */
+        main { margin-top: -3.5rem; flex: 1; }
 
         .portal-layout {
             display: grid;
@@ -116,67 +100,42 @@
         }
 
         @media (min-width: 768px) {
-            .portal-layout {
-                grid-template-columns: 1.5fr 1fr;
-            }
+            .portal-layout { grid-template-columns: 1.6fr 1fr; }
         }
 
-        /* --- TARJETA DE BÚSQUEDA --- */
+        /* --- CARDS --- */
         .card {
             background: var(--white);
             padding: 2.5rem;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
+            border: 1px solid rgba(226, 232, 240, 0.5);
         }
 
-        .card-header {
-            margin-bottom: 2rem;
-        }
+        .card-header { margin-bottom: 2rem; }
+        .card-header h2 { color: var(--primary-dark); font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .card-header p { color: var(--text-light); font-size: 0.95rem; }
 
-        .card-header h2 {
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.6rem; color: var(--text-dark); }
 
-        .card-header p {
-            color: var(--text-light);
-            font-size: 0.95rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .input-group {
-            position: relative;
-        }
-
+        .input-wrapper { position: relative; display: flex; align-items: center; }
+        
         .input-icon {
             position: absolute;
             left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.2rem;
+            color: var(--text-light);
             pointer-events: none;
-            opacity: 0.6;
         }
 
         input[type="text"] {
             width: 100%;
             padding: 0.85rem 1rem 0.85rem 3rem;
-            border: 2.5px solid #e2e8f0;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 1rem;
             font-family: inherit;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         input[type="text"]:focus {
@@ -185,7 +144,7 @@
             box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
         }
 
-        /* --- BOTÓN Y LOADER --- */
+        /* --- BOTÓN --- */
         .btn-submit {
             width: 100%;
             background: var(--primary);
@@ -200,178 +159,146 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .btn-submit:hover {
-            background: var(--primary-dark);
-        }
+        .btn-submit:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-submit:active { transform: translateY(0); }
+        .btn-submit:disabled { background: #cbd5e1; cursor: not-allowed; }
 
-        .btn-submit:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
-
-        /* Estilo del Loader */
-        .btn-submit.loading {
-            position: relative;
-            pointer-events: none;
-        }
-
-        .btn-submit.loading::after {
-            content: '';
-            width: 18px;
-            height: 18px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid white;
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* --- HISTORIAL --- */
+        .history-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f1f5f9;
+            display: none;
         }
 
-        /* --- MENSAJES DE ESTADO --- */
+        .history-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent);
+            color: var(--primary-dark);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: 1px solid #bae6fd;
+            transition: all 0.2s;
+        }
+
+        .history-tag:hover { background: #e0f2fe; }
+
+        /* --- STATUS --- */
         .status-box {
             margin-top: 1.5rem;
             padding: 1rem;
             border-radius: 8px;
             font-size: 0.9rem;
             display: none;
-            text-align: center;
-            border-left: 5px solid transparent;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease-out;
         }
 
-        .status-box.success {
-            display: block;
-            background: #f0fdf4;
-            color: #166534;
-            border-left-color: var(--success);
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .status-box.error {
-            display: block;
-            background: #fef2f2;
-            color: #991b1b;
-            border-left-color: var(--error);
-        }
+        .status-box.success { display: flex; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .status-box.error { display: flex; background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 
-        /* --- SIDEBAR DE AYUDA --- */
+        /* --- SIDEBAR --- */
         .help-box {
-            background: var(--accent);
+            background: var(--white);
             padding: 2rem;
             border-radius: var(--radius);
-            border: 1px solid #bae6fd;
+            border: 1px solid #e2e8f0;
         }
 
-        .help-box h3 {
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-
-        .help-box ul {
-            list-style: none;
-        }
-
+        .help-box h3 { color: var(--text-dark); margin-bottom: 1.2rem; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+        .help-box ul { list-style: none; }
         .help-box li {
             font-size: 0.9rem;
-            margin-bottom: 0.75rem;
-            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
             position: relative;
+            color: var(--text-light);
         }
 
-        .help-box li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-weight: bold;
-        }
+        .help-box li i { position: absolute; left: 0; color: var(--success); top: 2px; }
 
-        .support-link {
-            display: inline-block;
-            margin-top: 1rem;
-            color: var(--primary);
+        .support-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+            background: #25d366;
+            color: white;
             text-decoration: none;
+            padding: 0.8rem;
+            border-radius: 8px;
             font-weight: 600;
-            font-size: 0.9rem;
+            transition: opacity 0.2s;
         }
 
-        /* --- FOOTER PROFESIONAL --- */
+        .support-btn:hover { opacity: 0.9; }
+
+        /* --- FOOTER --- */
         footer {
             background: var(--white);
-            padding: 4rem 0 3rem 0;
+            padding: 4rem 0 2rem 0;
             margin-top: 4rem;
             border-top: 1px solid #e2e8f0;
-            color: var(--text-light);
-            font-size: 0.85rem;
         }
 
         .footer-grid {
             display: grid;
-            gap: 2.5rem;
-            grid-template-columns: 1fr;
+            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
 
-        @media (min-width: 768px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr 1.2fr;
-                text-align: left;
-            }
-        }
+        .footer-section h4 { color: var(--text-dark); margin-bottom: 1.2rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-section p, .footer-section div { color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.5rem; }
+        
+        .prof-name { color: var(--primary-dark); font-weight: 700; font-size: 0.95rem; display: block; margin-bottom: 2px; }
 
-        .footer-section h4 {
-            color: var(--text-dark);
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .professional-info {
-            line-height: 1.8;
-        }
-
-        .prof-name {
-            color: var(--primary-dark);
-            font-weight: 700;
-            font-size: 1rem;
-            display: block;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .copyright-bar {
-            margin-top: 3rem;
+        .copyright {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #94a3b8;
             padding-top: 2rem;
             border-top: 1px solid #f1f5f9;
-            text-align: center;
-            opacity: 0.8;
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar" role="navigation" aria-label="Navegación principal">
+    <nav class="navbar">
         <div class="container">
             <a href="#" class="logo">
-                <div class="logo-icon" aria-hidden="true">✚</div>
-                <div class="logo-text">LABORATORIOS <strong>NANA</strong></div>
+                <img src="logoAP.jpg" alt="Laboratorios Adriana Patiño" class="logo-img">
             </a>
         </div>
     </nav>
 
     <header class="hero">
         <div class="container">
-            <h1>Portal de Certificados</h1>
-            <p>Acceda a sus resultados clínicos con total seguridad y confidencialidad.</p>
+            <h1>Portal de Resultados</h1>
+            <p>Consulta y descarga tus exámenes clínicos de forma segura desde cualquier lugar.</p>
         </div>
     </header>
 
@@ -380,148 +307,179 @@
             
             <section class="card">
                 <div class="card-header">
-                    <h2>Consultar Resultados</h2>
-                    <p>Ingrese su identificación para descargar el reporte oficial en PDF.</p>
+                    <h2>Consulta de Certificados</h2>
+                    <p>Ingresa el número de identificación del paciente.</p>
                 </div>
 
-                <form id="search-form" novalidate>
+                <form id="search-form">
                     <div class="form-group">
                         <label for="doc-id">Número de Documento</label>
-                        <div class="input-group">
-                            <span class="input-icon" aria-hidden="true">🆔</span>
+                        <div class="input-wrapper">
+                            <i data-lucide="user" class="input-icon" size="18"></i>
                             <input 
                                 type="text" 
                                 id="doc-id" 
                                 placeholder="Ej: 10203040"
-                                pattern="[0-9]+"
                                 inputmode="numeric"
                                 maxlength="15"
-                                required
-                                aria-required="true">
+                                required>
                         </div>
                     </div>
+
                     <button type="submit" id="submit-btn" class="btn-submit">
-                        <span class="btn-text">Consultar Documento</span>
+                        <span class="spinner" id="btn-spinner"></span>
+                        <span id="btn-text">Descargar Reporte PDF</span>
+                        <i data-lucide="download" size="18" id="btn-icon"></i>
                     </button>
                 </form>
 
-                <div id="status-message" class="status-box" role="alert"></div>
+                <!-- Sección de Historial Local -->
+                <div id="history-container" class="history-section">
+                    <label>Búsqueda reciente:</label>
+                    <div id="history-list"></div>
+                </div>
+
+                <div id="status-message" class="status-box" role="alert">
+                    <i id="status-icon" size="20"></i>
+                    <span id="status-text"></span>
+                </div>
             </section>
 
-            <aside class="help-box">
-                <h3>¿Necesita asistencia?</h3>
-                <ul>
-                    <li>Verifique que el número ingresado sea correcto.</li>
-                    <li>Los resultados pueden tardar entre 24 y 48 horas.</li>
-                    <li>Consulte si el examen ya fue validado por el especialista.</li>
-                </ul>
-                <a href="https://wa.me/573155257405" target="_blank" rel="noopener noreferrer" class="support-link">💬 Soporte Técnico (WhatsApp)</a>
+            <aside>
+                <div class="help-box">
+                    <h3><i data-lucide="help-circle" size="20"></i> Guía de consulta</h3>
+                    <ul>
+                        <li><i data-lucide="check-circle-2" size="16"></i> Solo use números, sin puntos ni comas.</li>
+                        <li><i data-lucide="check-circle-2" size="16"></i> Reportes disponibles tras 24-48 horas.</li>
+                        <li><i data-lucide="check-circle-2" size="16"></i> El archivo se descargará automáticamente.</li>
+                    </ul>
+                    <a href="https://wa.me/573155257405" class="support-btn" target="_blank">
+                        <i data-lucide="message-circle" size="20"></i>
+                        Contactar Soporte
+                    </a>
+                </div>
             </aside>
 
         </div>
     </main>
 
     <footer>
-        <div class="container footer-grid">
-            <div class="footer-section">
-                <h4>Dirección Técnica</h4>
-                <div class="professional-info">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Dirección Técnica</h4>
                     <span class="prof-name">Adriana Patiño Dorado</span>
                     <p>Bacterióloga</p>
-                    <p style="font-size: 0.8rem; margin-top: 4px;">Especialista en Salud Ocupacional y Riesgos Laborales</p>
-                    <p style="font-size: 0.8rem; opacity: 0.8;">Reg. 29813130 | Lic. 25-3192</p>
+                    <p>Esp. Salud Ocupacional y Riesgos Laborales</p>
+                    <p style="opacity: 0.7;">Reg. 29813130 | Lic. 25-3192</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Sede Principal</h4>
+                    <p><i data-lucide="map-pin" size="14" style="vertical-align: middle; margin-right: 5px;"></i> Carrera 15 Este No 69-60 Sur</p>
+                    <p>Juan Rey, Bogotá D.C.</p>
+                    <p><i data-lucide="phone" size="14" style="vertical-align: middle; margin-right: 5px;"></i> 3653107 ext. 1018-1011</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Certificaciones</h4>
+                    <p>Laboratorio clínico autorizado para procesamiento de baja y mediana complejidad.</p>
+                    <p><strong>BOGOTÁ D.C. - COLOMBIA</strong></p>
                 </div>
             </div>
-
-            <div class="footer-section">
-                <h4>Contacto Sede</h4>
-                <div class="contact-item">📍 Carrera 15 Este No 69-60 Sur</div>
-                <div class="contact-item">🏘️ Juan Rey, Bogotá D.C.</div>
-                <div class="contact-item">📞 Tel: 3653107 ext. 1018-1011</div>
+            <div class="copyright">
+                &copy; 2026 Laboratorios Nana. Todos los derechos reservados.
             </div>
-
-            <div class="footer-section">
-                <h4>Información</h4>
-                <p>Laboratorio clínico autorizado para el procesamiento de pruebas de baja y mediana complejidad.</p>
-                <p style="margin-top: 10px; font-weight: 500;">BOGOTÁ.D.C. - COLOMBIA</p>
-            </div>
-        </div>
-
-        <div class="container copyright-bar">
-            <p>&copy; 2026 Laboratorios Nana. Todos los derechos reservados.</p>
         </div>
     </footer>
 
     <script>
-        /**
-         * Lógica del Portal de Resultados
-         * Maneja la validación de archivos y feedback visual
-         */
-        const searchForm = document.getElementById('search-form');
-        const statusMessage = document.getElementById('status-message');
-        const submitBtn = document.getElementById('submit-btn');
-        const btnText = submitBtn.querySelector('.btn-text');
+        // Inicializar Iconos
+        lucide.createIcons();
+
+        const form = document.getElementById('search-form');
         const docInput = document.getElementById('doc-id');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnSpinner = document.getElementById('btn-spinner');
+        const btnIcon = document.getElementById('btn-icon');
+        const statusBox = document.getElementById('status-message');
+        const historyContainer = document.getElementById('history-container');
+        const historyList = document.getElementById('history-list');
 
-        const PDF_FOLDER_PATH = './Documentos/'; 
-
-        /**
-         * Muestra mensajes de estado al usuario
-         */
-        const showFeedback = (text, type) => {
-            statusMessage.textContent = text;
-            statusMessage.className = `status-box ${type}`;
+        const CONFIG = {
+            PDF_PATH: './Documentos/',
+            STORAGE_KEY: 'last_search_nana'
         };
 
-        /**
-         * Verifica la existencia del archivo en el servidor mediante HEAD request
-         */
-        const verifyFile = async (url) => {
-            try {
-                // Implementación de Fetch con tiempo de espera para simular carga si es necesario
-                const response = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
-                return response.ok;
-            } catch (e) { 
-                return false; 
+        // Cargar historial al iniciar
+        const loadHistory = () => {
+            const lastSearch = localStorage.getItem(CONFIG.STORAGE_KEY);
+            if (lastSearch) {
+                historyContainer.style.display = 'block';
+                historyList.innerHTML = `
+                    <div class="history-tag" onclick="useHistory('${lastSearch}')">
+                        <i data-lucide="history" size="14"></i> ${lastSearch}
+                    </div>
+                `;
+                lucide.createIcons();
             }
         };
 
-        searchForm.addEventListener('submit', async (e) => {
+        window.useHistory = (id) => {
+            docInput.value = id;
+            form.dispatchEvent(new Event('submit'));
+        };
+
+        const showStatus = (msg, type) => {
+            statusBox.style.display = 'flex';
+            statusBox.className = `status-box ${type}`;
+            document.getElementById('status-text').textContent = msg;
+            const iconName = type === 'success' ? 'check-circle' : 'alert-circle';
+            document.getElementById('status-icon').setAttribute('data-lucide', iconName);
+            lucide.createIcons();
+        };
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const docId = docInput.value.trim();
-            if (!docId) return;
+            const id = docInput.value.trim().replace(/\D/g, ''); // Limpiar no-numéricos
 
-            // Reset de estados
-            statusMessage.className = 'status-box';
+            if (!id) return;
+
+            // UI Loading
             submitBtn.disabled = true;
-            submitBtn.classList.add('loading');
-            btnText.textContent = 'Verificando...';
+            btnSpinner.style.display = 'block';
+            btnIcon.style.display = 'none';
+            btnText.textContent = 'Buscando...';
+            statusBox.style.display = 'none';
 
-            const fileUrl = `${PDF_FOLDER_PATH}${docId}.pdf`;
+            const fileUrl = `${CONFIG.PDF_PATH}${id}.pdf`;
 
             try {
-                // Esperamos la verificación del archivo
-                const exists = await verifyFile(fileUrl);
-
-                if (exists) {
-                    showFeedback('Documento encontrado. Abriendo reporte...', 'success');
-                    // Pequeño delay para que el usuario vea el mensaje de éxito
-                    setTimeout(() => { 
-                        window.open(fileUrl, '_blank'); 
-                    }, 1000);
+                const response = await fetch(fileUrl, { method: 'HEAD', cache: 'no-cache' });
+                
+                if (response.ok) {
+                    showStatus('Documento encontrado. Descargando...', 'success');
+                    localStorage.setItem(CONFIG.STORAGE_KEY, id);
+                    loadHistory();
+                    
+                    setTimeout(() => {
+                        window.open(fileUrl, '_blank');
+                    }, 800);
                 } else {
-                    showFeedback(`No se encontró el certificado para el documento ${docId}.`, 'error');
+                    showStatus(`No se encontró resultado para el documento ${id}. Por favor verifique o contacte a soporte.`, 'error');
                 }
-            } catch (error) {
-                showFeedback('Error en la conexión. Intente más tarde.', 'error');
+            } catch (err) {
+                showStatus('Error de conexión. Intente nuevamente.', 'error');
             } finally {
-                // Restaurar botón
                 submitBtn.disabled = false;
-                submitBtn.classList.remove('loading');
-                btnText.textContent = 'Consultar Documento';
+                btnSpinner.style.display = 'none';
+                btnIcon.style.display = 'block';
+                btnText.textContent = 'Descargar Reporte PDF';
             }
         });
+
+        loadHistory();
     </script>
 </body>
 </html>
