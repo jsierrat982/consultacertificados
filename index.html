@@ -1,488 +1,305 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados en Línea | AP Laboratorio Clinico SGSST</title>
+    <title>Portal de Certificados | Verificación Institucional</title>
+    <meta name="description" content="Consulta, descarga y verifica la autenticidad de tus certificados académicos y profesionales en línea.">
+    
+    <!-- Fuentes: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Scripts de Iconos -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Tailwind CSS (Usando CDN para desarrollo rápido, se recomienda compilar para producción) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        :root {
-            --primary: #0284c7;
-            --primary-dark: #0369a1;
-            --secondary: #06b6d4;
-            --accent: #f0f9ff;
-            --success: #10b981;
-            --error: #ef4444;
-            --bg-main: #f8fafc;
-            --text-dark: #0f172a;
-            --text-light: #64748b;
-            --white: #ffffff;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-dark);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        .input-focus-effect:focus { box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); }
+        .loader {
+            border-top-color: #2563eb;
+            animation: spinner 0.6s linear infinite;
         }
-
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        /* --- NAVEGACIÓN --- */
-        .navbar {
-            background: var(--white);
-            padding: 0.75rem 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        .accordion-content {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
         }
-
-        .navbar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        /* Estilos específicos para el logo de imagen */
-        .logo-img {
-            height: 45px; /* Altura ideal para la barra de navegación */
-            width: auto;
-            display: block;
-            transition: transform 0.2s ease;
-        }
-
-        .logo:hover .logo-img {
-            transform: scale(1.02);
-        }
-
-        /* --- HERO --- */
-        .hero {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white);
-            padding: 4rem 0 6rem 0;
-            text-align: center;
-        }
-
-        .hero h1 { font-size: 2.25rem; margin-bottom: 0.75rem; }
-        .hero p { font-size: 1.1rem; opacity: 0.95; max-width: 600px; margin: 0 auto; }
-
-        /* --- LAYOUT --- */
-        main { margin-top: -3.5rem; flex: 1; }
-
-        .portal-layout {
-            display: grid;
-            gap: 2rem;
-            grid-template-columns: 1fr;
-        }
-
-        @media (min-width: 768px) {
-            .portal-layout { grid-template-columns: 1.6fr 1fr; }
-        }
-
-        /* --- CARDS --- */
-        .card {
-            background: var(--white);
-            padding: 2.5rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(226, 232, 240, 0.5);
-        }
-
-        .card-header { margin-bottom: 2rem; }
-        .card-header h2 { color: var(--primary-dark); font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .card-header p { color: var(--text-light); font-size: 0.95rem; }
-
-        .form-group { margin-bottom: 1.5rem; }
-        label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.6rem; color: var(--text-dark); }
-
-        .input-wrapper { position: relative; display: flex; align-items: center; }
-        
-        .input-icon {
-            position: absolute;
-            left: 1rem;
-            color: var(--text-light);
-            pointer-events: none;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 0.85rem 1rem 0.85rem 3rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
-        }
-
-        /* --- BOTÓN --- */
-        .btn-submit {
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-submit:hover { background: var(--primary-dark); transform: translateY(-1px); }
-        .btn-submit:active { transform: translateY(0); }
-        .btn-submit:disabled { background: #cbd5e1; cursor: not-allowed; }
-
-        .spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* --- HISTORIAL --- */
-        .history-section {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #f1f5f9;
-            display: none;
-        }
-
-        .history-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--accent);
-            color: var(--primary-dark);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            border: 1px solid #bae6fd;
-            transition: all 0.2s;
-        }
-
-        .history-tag:hover { background: #e0f2fe; }
-
-        /* --- STATUS --- */
-        .status-box {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .status-box.success { display: flex; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-        .status-box.error { display: flex; background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
-
-        /* --- SIDEBAR --- */
-        .help-box {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
-            border: 1px solid #e2e8f0;
-        }
-
-        .help-box h3 { color: var(--text-dark); margin-bottom: 1.2rem; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
-        .help-box ul { list-style: none; }
-        .help-box li {
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            padding-left: 2rem;
-            position: relative;
-            color: var(--text-light);
-        }
-
-        .help-box li i { position: absolute; left: 0; color: var(--success); top: 2px; }
-
-        .support-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 1.5rem;
-            background: #25d366;
-            color: white;
-            text-decoration: none;
-            padding: 0.8rem;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: opacity 0.2s;
-        }
-
-        .support-btn:hover { opacity: 0.9; }
-
-        /* --- FOOTER --- */
-        footer {
-            background: var(--white);
-            padding: 4rem 0 2rem 0;
-            margin-top: 4rem;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .footer-grid {
-            display: grid;
-            gap: 3rem;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        }
-
-        .footer-section h4 { color: var(--text-dark); margin-bottom: 1.2rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        .footer-section p, .footer-section div { color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.5rem; }
-        
-        .prof-name { color: var(--primary-dark); font-weight: 700; font-size: 0.95rem; display: block; margin-bottom: 2px; }
-
-        .copyright {
-            margin-top: 4rem;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #94a3b8;
-            padding-top: 2rem;
-            border-top: 1px solid #f1f5f9;
+        .accordion-content.open {
+            max-height: 500px;
+            opacity: 1;
         }
     </style>
 </head>
-<body>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <nav class="navbar">
-        <div class="container">
-            <a href="#" class="logo">
-                <img src="logoAP.jpg" alt="Laboratorios Adriana Patiño" class="logo-img">
-            </a>
+    <!-- Navegación -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="bg-blue-600 text-white p-2 rounded-lg">
+                        <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-xl text-slate-900 leading-tight">Portal Institucional</h1>
+                        <p class="text-xs text-slate-500 font-medium tracking-wide uppercase">Emisión de Certificados</p>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                        <i data-lucide="shield-check" class="w-4 h-4 mr-1"></i> Verificación Segura
+                    </span>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="container">
-            <h1>Portal de Resultados</h1>
-            <p>Consulta y descarga tus exámenes clínicos de forma segura desde cualquier lugar.</p>
+    <!-- Hero Section -->
+    <header class="relative bg-slate-900 py-12 sm:py-20 overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#64748b_1px,transparent_1px)] [background-size:20px_20px]"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
+                Tus logros, <span class="text-blue-400">siempre disponibles.</span>
+            </h2>
+            <p class="text-lg text-slate-300 max-w-2xl mx-auto">
+                Consulta y descarga tus certificados de asistencia, participación y aprobación. Validados institucionalmente.
+            </p>
         </div>
     </header>
 
-    <main class="container">
-        <div class="portal-layout">
+    <!-- Contenido Principal -->
+    <main class="flex-grow max-w-6xl mx-auto w-full px-4 -mt-10 mb-20 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <section class="card">
-                <div class="card-header">
-                    <h2>Consulta de Certificados</h2>
-                    <p>Ingresa el número de identificación del paciente.</p>
-                </div>
-
-                <form id="search-form">
-                    <div class="form-group">
-                        <label for="doc-id">Número de Documento</label>
-                        <div class="input-wrapper">
-                            <i data-lucide="user" class="input-icon" size="18"></i>
-                            <input 
-                                type="text" 
-                                id="doc-id" 
-                                placeholder="Ej: 10203040"
-                                inputmode="numeric"
-                                maxlength="15"
-                                required>
+            <!-- Columna del Formulario -->
+            <section class="lg:col-span-2 space-y-6">
+                <div class="glass-card rounded-2xl shadow-xl shadow-slate-200/50 p-6 sm:p-10">
+                    <div class="flex items-center space-x-3 mb-8">
+                        <div class="bg-blue-50 p-3 rounded-xl">
+                            <i data-lucide="search" class="text-blue-600 w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-900">Consulta de Certificados</h2>
+                            <p class="text-sm text-slate-500">Ingresa tu número de identificación para ubicar tus documentos.</p>
                         </div>
                     </div>
 
-                    <button type="submit" id="submit-btn" class="btn-submit">
-                        <span class="spinner" id="btn-spinner"></span>
-                        <span id="btn-text">Descargar Reporte PDF</span>
-                        <i data-lucide="download" size="18" id="btn-icon"></i>
-                    </button>
-                </form>
+                    <form id="search-form" class="space-y-6">
+                        <div>
+                            <label for="doc-id" class="block text-sm font-semibold text-slate-700 mb-2">Número de Documento</label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                                    <i data-lucide="id-card" size="20"></i>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    id="doc-id" 
+                                    class="block w-full pl-12 pr-4 py-4 bg-white border-2 border-slate-200 rounded-xl text-slate-900 text-lg placeholder:text-slate-400 focus:outline-none focus:ring-0 focus:border-blue-600 transition-all input-focus-effect"
+                                    placeholder="Ej: 1020304050 (Sin puntos ni guiones)"
+                                    inputmode="numeric"
+                                    required
+                                >
+                            </div>
+                        </div>
 
-                <!-- Sección de Historial Local -->
-                <div id="history-container" class="history-section">
-                    <label>Búsqueda reciente:</label>
-                    <div id="history-list"></div>
+                        <button type="submit" id="submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all flex items-center justify-center space-x-3 group shadow-md shadow-blue-600/20 active:scale-[0.98]">
+                            <div class="loader hidden w-5 h-5 border-2 border-white/30 rounded-full" id="btn-spinner"></div>
+                            <span id="btn-text">Consultar Certificados</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform" id="btn-icon"></i>
+                        </button>
+                    </form>
+
+                    <!-- Mensajes de Estado -->
+                    <div id="status-message" class="mt-6 p-4 rounded-xl hidden flex items-start space-x-3">
+                        <div id="status-icon-container" class="mt-0.5"></div>
+                        <div>
+                            <p id="status-text" class="text-sm font-medium"></p>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="status-message" class="status-box" role="alert">
-                    <i id="status-icon" size="20"></i>
-                    <span id="status-text"></span>
+                <!-- Bloque de Privacidad -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex gap-3 text-sm text-slate-600">
+                    <i data-lucide="lock" class="w-5 h-5 text-slate-400 flex-shrink-0"></i>
+                    <p><strong>Privacidad de Datos:</strong> Esta plataforma utiliza consultas anónimas basadas únicamente en el número de documento proporcionado. No almacenamos, compartimos ni rastreamos información personal identificable durante este proceso.</p>
                 </div>
             </section>
 
-            <aside>
-                <div class="help-box">
-                    <h3><i data-lucide="help-circle" size="20"></i> Guía de consulta</h3>
-                    <ul>
-                        <li><i data-lucide="check-circle-2" size="16"></i> Solo use números, sin puntos ni comas.</li>
-                        <li><i data-lucide="check-circle-2" size="16"></i> Reportes disponibles tras 24-48 horas.</li>
-                        <li><i data-lucide="check-circle-2" size="16"></i> El archivo se descargará automáticamente.</li>
-                    </ul>
-                    <a href="https://wa.me/573155257405" class="support-btn" target="_blank">
-                        <i data-lucide="message-circle" size="20"></i>
-                        Contactar Soporte
-                    </a>
-                </div>
-            </aside>
+            <!-- Sidebar Didáctico / Educativo -->
+            <aside class="space-y-6">
+                
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                    <h3 class="flex items-center text-lg font-bold mb-4 text-slate-800 border-b pb-3">
+                        <i data-lucide="help-circle" class="mr-2 w-5 h-5 text-blue-600"></i>
+                        Centro de Ayuda
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <!-- Acordeón 1 -->
+                        <div class="border border-slate-100 rounded-lg overflow-hidden">
+                            <button class="accordion-btn w-full flex justify-between items-center p-3 text-left bg-slate-50 hover:bg-slate-100 transition-colors text-sm font-semibold text-slate-700">
+                                ¿Cómo verifico la validez?
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+                            </button>
+                            <div class="accordion-content bg-white p-3 text-sm text-slate-600 border-t border-slate-100">
+                                Todo certificado descargado desde este portal oficial cuenta con la validez de la institución emisora. Si el documento tiene un código QR, puedes escanearlo para validar su autenticidad.
+                            </div>
+                        </div>
 
+                        <!-- Acordeón 2 -->
+                        <div class="border border-slate-100 rounded-lg overflow-hidden">
+                            <button class="accordion-btn w-full flex justify-between items-center p-3 text-left bg-slate-50 hover:bg-slate-100 transition-colors text-sm font-semibold text-slate-700">
+                                ¿Qué pasa si no aparezco?
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+                            </button>
+                            <div class="accordion-content bg-white p-3 text-sm text-slate-600 border-t border-slate-100">
+                                Si completaste una formación y tu documento no aparece, verifica haber digitado correctamente el número sin puntos. Si el problema persiste, la carga de tu documento podría estar en proceso.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Glosario -->
+                <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-lg">
+                    <h3 class="flex items-center text-lg font-bold mb-4 text-white">
+                        <i data-lucide="book-open" class="mr-2 w-5 h-5 text-blue-400"></i>
+                        Glosario Rápido
+                    </h3>
+                    <ul class="space-y-4 text-sm text-slate-300">
+                        <li>
+                            <strong class="text-blue-300 block">Certificado de Aprobación:</strong>
+                            Documento que valida que cumpliste con los requisitos de evaluación de un curso.
+                        </li>
+                        <li>
+                            <strong class="text-blue-300 block">Constancia de Asistencia:</strong>
+                            Valida tu participación en un evento sin requerir una evaluación de conocimientos.
+                        </li>
+                    </ul>
+                </div>
+
+            </aside>
         </div>
     </main>
-
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>Dirección Técnica</h4>
-                    <span class="prof-name">Adriana Patiño Dorado</span>
-                    <p>Bacterióloga</p>
-                    <p>Esp. Salud Ocupacional y Riesgos Laborales</p>
-                    <p style="opacity: 0.7;">Reg. 29813130 | Lic. 25-3192</p>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Sede Principal</h4>
-                    <p><i data-lucide="map-pin" size="14" style="vertical-align: middle; margin-right: 5px;"></i> Carrera 15 Este No 69-60 Sur</p>
-                    <p>Juan Rey, Bogotá D.C.</p>
-                    <p><i data-lucide="phone" size="14" style="vertical-align: middle; margin-right: 5px;"></i> +57 300 6568075</p>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Certificaciones</h4>
-                    <p>Laboratorio clínico autorizado para procesamiento de baja y mediana complejidad.</p>
-                    <p><strong>BOGOTÁ D.C. - COLOMBIA</strong></p>
-                </div>
-            </div>
-            <div class="copyright">
-                &copy; 2026  AP Laboratorio Clinico SGSST - Todos los derechos reservados.
-            </div>
-        </div>
-    </footer>
 
     <script>
         // Inicializar Iconos
         lucide.createIcons();
 
-        const form = document.getElementById('search-form');
-        const docInput = document.getElementById('doc-id');
-        const submitBtn = document.getElementById('submit-btn');
-        const btnText = document.getElementById('btn-text');
-        const btnSpinner = document.getElementById('btn-spinner');
-        const btnIcon = document.getElementById('btn-icon');
-        const statusBox = document.getElementById('status-message');
-        const historyContainer = document.getElementById('history-container');
-        const historyList = document.getElementById('history-list');
+        // Lógica de los Acordeones (Didáctica)
+        document.querySelectorAll('.accordion-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.nextElementSibling;
+                const icon = btn.querySelector('i');
+                const isOpen = content.classList.contains('open');
+                
+                // Cerrar todos
+                document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+                document.querySelectorAll('.accordion-btn i').forEach(i => i.style.transform = 'rotate(0deg)');
+                
+                // Abrir el clickeado si estaba cerrado
+                if (!isOpen) {
+                    content.classList.add('open');
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
 
+        // Configuración de rutas
         const CONFIG = {
-            PDF_PATH: './Documentos/',
-            STORAGE_KEY: 'last_search_nana'
+            PDF_PATH: './Documentos/'
         };
 
-        // Cargar historial al iniciar
-        const loadHistory = () => {
-            const lastSearch = localStorage.getItem(CONFIG.STORAGE_KEY);
-            if (lastSearch) {
-                historyContainer.style.display = 'block';
-                historyList.innerHTML = `
-                    <div class="history-tag" onclick="useHistory('${lastSearch}')">
-                        <i data-lucide="history" size="14"></i> ${lastSearch}
-                    </div>
-                `;
-                lucide.createIcons();
-            }
+        const elements = {
+            form: document.getElementById('search-form'),
+            input: document.getElementById('doc-id'),
+            submitBtn: document.getElementById('submit-btn'),
+            btnText: document.getElementById('btn-text'),
+            btnSpinner: document.getElementById('btn-spinner'),
+            btnIcon: document.getElementById('btn-icon'),
+            statusBox: document.getElementById('status-message'),
+            statusText: document.getElementById('status-text'),
+            statusIconContainer: document.getElementById('status-icon-container')
         };
 
-        window.useHistory = (id) => {
-            docInput.value = id;
-            form.dispatchEvent(new Event('submit'));
-        };
+        const showStatus = (msg, type = 'info') => {
+            const themes = {
+                success: {
+                    bg: 'bg-green-50', border: 'border border-green-200', text: 'text-green-800', icon: 'check-circle'
+                },
+                error: {
+                    bg: 'bg-red-50', border: 'border border-red-200', text: 'text-red-800', icon: 'x-circle'
+                },
+                info: {
+                    bg: 'bg-blue-50', border: 'border border-blue-200', text: 'text-blue-800', icon: 'info'
+                }
+            };
 
-        const showStatus = (msg, type) => {
-            statusBox.style.display = 'flex';
-            statusBox.className = `status-box ${type}`;
-            document.getElementById('status-text').textContent = msg;
-            const iconName = type === 'success' ? 'check-circle' : 'alert-circle';
-            document.getElementById('status-icon').setAttribute('data-lucide', iconName);
+            const theme = themes[type];
+            
+            elements.statusBox.className = `mt-6 p-4 rounded-xl flex items-start space-x-3 transition-all ${theme.bg} ${theme.border}`;
+            elements.statusText.className = `text-sm font-medium ${theme.text}`;
+            elements.statusText.textContent = msg;
+            elements.statusIconContainer.innerHTML = `<i data-lucide="${theme.icon}" class="${theme.text} w-5 h-5"></i>`;
+            
+            elements.statusBox.classList.remove('hidden');
             lucide.createIcons();
         };
 
-        form.addEventListener('submit', async (e) => {
+        elements.form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const id = docInput.value.trim().replace(/\D/g, ''); // Limpiar no-numéricos
+            
+            const id = elements.input.value.trim().replace(/\D/g, '');
+            if (!id) {
+                showStatus('Por favor, ingresa un número de documento válido (solo números).', 'info');
+                return;
+            }
 
-            if (!id) return;
-
-            // UI Loading
-            submitBtn.disabled = true;
-            btnSpinner.style.display = 'block';
-            btnIcon.style.display = 'none';
-            btnText.textContent = 'Buscando...';
-            statusBox.style.display = 'none';
+            elements.submitBtn.disabled = true;
+            elements.btnSpinner.classList.remove('hidden');
+            elements.btnIcon.classList.add('hidden');
+            elements.btnText.textContent = 'Buscando...';
+            elements.statusBox.classList.add('hidden');
 
             const fileUrl = `${CONFIG.PDF_PATH}${id}.pdf`;
 
             try {
+                // Petición HEAD para validar existencia sin descargar el archivo
                 const response = await fetch(fileUrl, { method: 'HEAD', cache: 'no-cache' });
                 
                 if (response.ok) {
-                    showStatus('Documento encontrado. Descargando...', 'success');
-                    localStorage.setItem(CONFIG.STORAGE_KEY, id);
-                    loadHistory();
+                    showStatus('¡Certificado encontrado! Iniciando descarga segura...', 'success');
                     
                     setTimeout(() => {
                         window.open(fileUrl, '_blank');
-                    }, 800);
+                        elements.input.value = ''; // Limpiar el input tras éxito
+                    }, 1200);
                 } else {
-                    showStatus(`No se encontró resultado para el documento ${id}. Por favor verifique o contacte a soporte.`, 'error');
+                    showStatus(`No se encontraron certificados asociados al documento ${id}. Verifica el número o contacta a la administración.`, 'error');
                 }
             } catch (err) {
-                showStatus('Error de conexión. Intente nuevamente.', 'error');
+                showStatus('No se pudo establecer conexión con el repositorio de documentos.', 'error');
             } finally {
-                submitBtn.disabled = false;
-                btnSpinner.style.display = 'none';
-                btnIcon.style.display = 'block';
-                btnText.textContent = 'Descargar Reporte PDF';
+                elements.submitBtn.disabled = false;
+                elements.btnSpinner.classList.add('hidden');
+                elements.btnIcon.classList.remove('hidden');
+                elements.btnText.textContent = 'Consultar Certificados';
             }
         });
-
-        loadHistory();
     </script>
 </body>
 </html>
-
-
-
